@@ -1,23 +1,8 @@
-import { buildApp } from '../src/app';
+const { buildApp } = require('../dist/app');
 
-// Types for Vercel (will be available at runtime)
-interface VercelRequest {
-  method?: string;
-  url?: string;
-  headers: any;
-  body?: any;
-}
+let app = null;
 
-interface VercelResponse {
-  status(code: number): VercelResponse;
-  setHeader(key: string, value: string): void;
-  send(data: any): void;
-  json(data: any): void;
-}
-
-let app: any = null;
-
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+module.exports = async function handler(req, res) {
   try {
     // Initialize app only once
     if (!app) {
@@ -51,4 +36,4 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       timestamp: new Date().toISOString(),
     });
   }
-}
+};

@@ -1,0 +1,156 @@
+PROJECT BRIEF: github-wrapped-api
+
+## 1. PROJECT OBJECTIVE
+We are building a public, high-performance REST API called "github-wrapped-api".
+The primary goal is to provide developers with clean, simple JSON endpoints for their GitHub stats.
+The "killer feature" is a "Spotify Wrapped" style endpoint that summarizes a user's entire year of contributions.
+The project is designed to be highly shareable and has strong "viral" potential within the developer community.
+
+## 2. INSPIRATION & REFERENCE PROJECT (alfa-leetcode-api)
+Our inspiration is the success of `alfa-leetcode-api`. That project succeeded by:
+1. Identifying a popular platform (LeetCode).
+2. Finding a pain point (messy/private GraphQL API).
+3. Creating a clean, public, well-documented REST API wrapper.
+4. Getting 600+ stars by solving this common problem.
+
+Here is the file structure of `alfa-leetcode-api` for reference:
+alfa-leetcode-api-main/
+├── .dockerignore
+├── .gitignore
+├── bun.lockb
+├── CONTRIBUTING.md
+├── docker-compose.yml
+├── Dockerfile
+├── jest.config.ts
+├── LICENSE
+├── package.json
+├── README.md
+├── tsconfig.json
+├── vercel.json
+├── public/
+│   └── demo/
+└── src/
+    ├── app.ts
+    ├── config.ts
+    ├── index.ts
+    ├── leetCode.ts
+    ├── types.ts
+    ├── __tests__/
+    ├── Controllers/
+    ├── FormatUtils/
+    └── GQLQueries/
+
+## 3. OUR TECH STACK (The "Robust" Version)
+- **Framework:** Fastify (Chosen over Express for speed and better async support).
+- **Language:** TypeScript.
+- **GitHub Client:** @octokit/graphql (We will use the GitHub GraphQL API, not scraping).
+- **Caching:** Redis (CRITICAL to avoid rate limits and ensure speed).
+- **Deployment:** Vercel or Render.
+
+## 4. OUR TARGET PROJECT STRUCTURE
+We will use a clean, feature-based, and scalable structure:
+
+github-wrapped-api/
+├── .gitignore
+├── .prettierrc
+├── package.json
+├── tsconfig.json
+├── Dockerfile
+├── docker-compose.yml  # To run Redis locally
+├── README.md           # Our most important marketing tool
+├── vercel.json
+├── .env.example        # GIT_PAT=your_token_here
+│
+└── src/
+    ├── index.ts        # Server entry point (starts Fastify)
+    ├── app.ts          # Fastify app setup (registers routes, plugins)
+    ├── config.ts       # Loads all environment variables
+    ├── types.ts        # All our custom TypeScript interfaces
+    │
+    ├── lib/
+    │   ├── redis.ts    # Initializes and exports our Redis client
+    │   └── github.ts   # The GitHub GQL client logic (Octokit)
+    │
+    ├── api/
+    │   └── v1/
+    │       ├── routes.ts     # Main router that combines all feature routes
+    │       │
+    │       ├── features/
+    │       │   │
+    │       │   ├── user/     # Feature 1: Basic user stats
+    │       │   │   ├── user.controller.ts  # Route handler
+    │       │   │   ├── user.service.ts     # Business logic
+    │       │   │   └── user.gql.ts         # GraphQL queries for this feature
+    │       │   │
+    │       │   └── wrapped/  # Feature 2: The "Wrapped" stats
+    │       │       ├── wrapped.controller.ts
+    │       │       ├── wrapped.service.ts
+    │       │       └── wrapped.gql.ts      # The MONSTER query lives here
+    │
+    └── __tests__/
+        ├── mocks/
+        │   └── mockContributionData.json
+        └── v1/
+            └── wrapped.spec.ts
+
+## 5. API ENDPOINT PLAN (THE FEATURES)
+
+### V1 - The Core API (Must-Haves)
+1.  **`GET /v1/user/:username/profile`**
+    * **Returns:** Clean JSON: `name`, `avatarUrl`, `bio`, `followers`, `following`, `company`, `website`, `pinnedRepositories`.
+2.  **`GET /v1/user/:username/stats`**
+    * **Returns:** Classic stats card data: `totalStars`, `totalCommits` (all time), `totalPRs`, `totalIssues`, `totalContributions`, `languageBreakdown`.
+
+### V1 - The "BOOM" Feature (The "Wrapped" JSON)
+1.  **`GET /v1/wrapped/:username?year=2025`**
+    * This is our main endpoint. It gets all contribution data for a user for a specific year.
+    * **Example JSON Response:**
+    ```json
+    {
+      "year": 2025,
+      "username": "sumit",
+      "avatarUrl": "...",
+      "stats": {
+        "totalContributions": 1850,
+        "totalCommits": 1200,
+        "totalPRs": 350,
+        "totalIssues": 200,
+        "totalReviews": 100
+      },
+      "activity": {
+        "busiestMonth": "October",
+        "busiestDay": "Wednesday",
+        "longestStreak": 42,
+        "firstContribution": "2025-01-05",
+        "newReposCreated": 12
+      },
+      "languages": {
+        "topLanguage": "TypeScript",
+        "breakdown": [
+          { "lang": "TypeScript", "color": "#3178c6", "commits": 500 },
+          { "lang": "Python", "color": "#3572A5", "commits": 300 }
+        ]
+      },
+      "topRepos": [
+        { "name": "github-wrapped-api", "owner": "sumit", "contributions": 450 },
+        { "name": "other-cool-project", "owner": "someone-else", "contributions": 200 }
+      ]
+    }
+    ```
+
+### V2 - The "Go Viral" Features (Future)
+1.  **`GET /v1/wrapped/:username/image?year=2025`**
+    * Generates a shareable image (PNG) of the wrapped stats. This is what people will post on Twitter/LinkedIn and put in their GitHub READMEs.
+2.  **`GET /v1/repo/:owner/:repo/stats`**
+    * Get detailed stats for a single repository.
+3.  **`GET /v1/match?user1=sumit&user2=alfaarghya`**
+    * A fun social feature to compare two developers.
+
+## 6. ACTION PLAN
+We will follow this 4 stages plan:
+* ** 1:** Setup (Fastify, TS, Jest) & Build First Endpoint (`/v1/user/:username/profile`).
+* ** 2:** Caching (Redis) & The "Wrapped" GQL Query (Build the giant query).
+* **3:** Build The "Wrapped" Service (The data processing logic).
+* **4:** Documentation (The README) & Launch (Deploy to Vercel/Render).
+
+END OF BRIEF

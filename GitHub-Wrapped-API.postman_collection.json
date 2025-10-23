@@ -1,0 +1,240 @@
+{
+  "info": {
+    "name": "GitHub Wrapped API",
+    "description": "Complete API collection for GitHub Wrapped - Get your coding year in review!",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "username",
+      "value": "octocat",
+      "type": "string",
+      "description": "GitHub username to test with"
+    },
+    {
+      "key": "year",
+      "value": "2024",
+      "type": "string",
+      "description": "Year for wrapped stats"
+    }
+  ],
+  "item": [
+    {
+      "name": "🏠 API Documentation",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/",
+          "host": ["{{baseUrl}}"],
+          "path": [""]
+        },
+        "description": "Get API documentation and available endpoints"
+      },
+      "response": []
+    },
+    {
+      "name": "❤️ Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/v1/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["v1", "health"]
+        },
+        "description": "Check if the API is running and healthy"
+      },
+      "response": []
+    },
+    {
+      "name": "🔍 Rate Limit Status",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/v1/rate-limit",
+          "host": ["{{baseUrl}}"],
+          "path": ["v1", "rate-limit"]
+        },
+        "description": "Check GitHub API rate limit status"
+      },
+      "response": []
+    },
+    {
+      "name": "👤 User Profile",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/v1/user/{{username}}/profile",
+          "host": ["{{baseUrl}}"],
+          "path": ["v1", "user", "{{username}}", "profile"]
+        },
+        "description": "Get user profile information including bio, followers, pinned repos"
+      },
+      "response": []
+    },
+    {
+      "name": "📊 User Statistics",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/v1/user/{{username}}/stats",
+          "host": ["{{baseUrl}}"],
+          "path": ["v1", "user", "{{username}}", "stats"]
+        },
+        "description": "Get user statistics: total stars, commits, PRs, issues, language breakdown"
+      },
+      "response": []
+    },
+    {
+      "name": "🎁 Wrapped Stats (Main Feature)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/v1/wrapped/{{username}}?year={{year}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["v1", "wrapped", "{{username}}"],
+          "query": [
+            {
+              "key": "year",
+              "value": "{{year}}",
+              "description": "Year for wrapped stats (optional, defaults to current year)"
+            }
+          ]
+        },
+        "description": "🎯 THE MAIN FEATURE: Get comprehensive year-end wrapped statistics"
+      },
+      "response": []
+    },
+    {
+      "name": "🎁 Wrapped Stats - Current Year",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/v1/wrapped/{{username}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["v1", "wrapped", "{{username}}"]
+        },
+        "description": "Get wrapped stats for current year (no year parameter)"
+      },
+      "response": []
+    },
+    {
+      "name": "🎁 Wrapped Stats - 2023",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/v1/wrapped/{{username}}?year=2023",
+          "host": ["{{baseUrl}}"],
+          "path": ["v1", "wrapped", "{{username}}"],
+          "query": [
+            {
+              "key": "year",
+              "value": "2023"
+            }
+          ]
+        },
+        "description": "Get wrapped stats for 2023"
+      },
+      "response": []
+    },
+    {
+      "name": "❌ Error Test - Invalid Year",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/v1/wrapped/{{username}}?year=invalid",
+          "host": ["{{baseUrl}}"],
+          "path": ["v1", "wrapped", "{{username}}"],
+          "query": [
+            {
+              "key": "year",
+              "value": "invalid"
+            }
+          ]
+        },
+        "description": "Test error handling with invalid year parameter"
+      },
+      "response": []
+    },
+    {
+      "name": "❌ Error Test - Year Out of Range",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/v1/wrapped/{{username}}?year=2007",
+          "host": ["{{baseUrl}}"],
+          "path": ["v1", "wrapped", "{{username}}"],
+          "query": [
+            {
+              "key": "year",
+              "value": "2007"
+            }
+          ]
+        },
+        "description": "Test error handling with year before GitHub existed"
+      },
+      "response": []
+    },
+    {
+      "name": "❌ Error Test - Non-existent User",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/v1/user/thisuserdoesnotexist12345/profile",
+          "host": ["{{baseUrl}}"],
+          "path": ["v1", "user", "thisuserdoesnotexist12345", "profile"]
+        },
+        "description": "Test error handling with non-existent user"
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Set dynamic variables",
+          "pm.collectionVariables.set('timestamp', new Date().toISOString());"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Basic response validation",
+          "pm.test('Response time is less than 5000ms', function () {",
+          "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+          "});",
+          "",
+          "pm.test('Response has valid JSON', function () {",
+          "    pm.response.to.have.jsonBody();",
+          "});",
+          "",
+          "// Log response for debugging",
+          "console.log('Response Status:', pm.response.status);",
+          "console.log('Response Time:', pm.response.responseTime + 'ms');"
+        ]
+      }
+    }
+  ]
+}

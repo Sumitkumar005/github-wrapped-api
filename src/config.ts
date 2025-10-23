@@ -11,5 +11,8 @@ export const config = {
 
 // Validate required environment variables
 if (!config.githubToken) {
-  throw new Error('GITHUB_TOKEN environment variable is required');
+  console.error('❌ GITHUB_TOKEN environment variable is required');
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('GITHUB_TOKEN environment variable is required');
+  }
 }

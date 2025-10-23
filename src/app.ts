@@ -12,8 +12,12 @@ export async function buildApp() {
     },
   });
 
-  // Initialize Redis connection
-  await initRedis();
+  // Initialize Redis connection (optional)
+  try {
+    await initRedis();
+  } catch (error) {
+    console.warn('Redis initialization failed, continuing without cache:', error);
+  }
 
   // Register security plugins
   await fastify.register(helmet, {

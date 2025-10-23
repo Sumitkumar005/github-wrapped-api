@@ -8,5 +8,6 @@ export default async function handler(req: any, res: any) {
     await app.ready();
   }
   
+  // Handle the request
   app.server.emit('request', req, res);
 }

@@ -31,7 +31,7 @@ export class WrappedService {
         username,
         from,
         to,
-      });
+      }) as any;
 
       if (!response.user) {
         throw new GitHubAPIError(`User '${username}' not found`, 404);
@@ -82,7 +82,7 @@ export class WrappedService {
     }
 
     try {
-      const response = await githubGraphQL(GET_USER_STATS, { username });
+      const response = await githubGraphQL(GET_USER_STATS, { username }) as any;
 
       if (!response.user) {
         throw new GitHubAPIError(`User '${username}' not found`, 404);
@@ -224,7 +224,7 @@ export class WrappedService {
 
   private async calculateLanguageStats(username: string): Promise<LanguageStats> {
     try {
-      const response = await githubGraphQL(GET_LANGUAGE_STATS, { username });
+      const response = await githubGraphQL(GET_LANGUAGE_STATS, { username }) as any;
       
       if (!response.user) {
         return { topLanguage: null, breakdown: [] };

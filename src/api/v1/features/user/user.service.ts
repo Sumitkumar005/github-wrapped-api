@@ -14,7 +14,7 @@ export class UserService {
     }
 
     try {
-      const response = await githubGraphQL(GET_USER_PROFILE, { username });
+      const response = await githubGraphQL(GET_USER_PROFILE, { username }) as any;
       
       if (!response.user) {
         throw new GitHubAPIError(`User '${username}' not found`, 404);
@@ -49,7 +49,7 @@ export class UserService {
       }
       
       // Handle GraphQL errors
-      if (error.errors) {
+      if ((error as any).errors) {
         throw new GitHubAPIError('GitHub API error', 400, error);
       }
       

@@ -283,8 +283,6 @@ If this project helped you, please consider:
 - 🤝 **Contributing** to the codebase
 
 ## 🙏 Acknowledgments
-
-- Inspired by [alfa-leetcode-api](https://github.com/alfaarghya/alfa-leetcode-api)
 - Built with [Fastify](https://www.fastify.io/) for performance
 - Powered by [GitHub GraphQL API](https://docs.github.com/en/graphql)
 - Cached with [Redis](https://redis.io/) for speed

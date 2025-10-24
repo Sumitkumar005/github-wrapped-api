@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "A GitHub Wrapped API that provides personalized year-end statistics",
   "main": "dist/index.js",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "build": "tsc",

@@ -20,6 +20,7 @@ module.exports = async function handler(req, res) {
       url: req.url || '/',
       headers: req.headers,
       payload: req.body,
+      query: req.query,
     });
 
     console.log('📤 Response status:', response.statusCode);
@@ -29,17 +30,21 @@ module.exports = async function handler(req, res) {
 
     // Set headers
     Object.keys(response.headers).forEach(key => {
-      res.setHeader(key, response.headers[key]);
+      if (key.toLowerCase() !== 'content-length') {
+        res.setHeader(key, response.headers[key]);
+      }
     });
 
     // Send response
-    res.send(response.payload);
+    res.end(response.payload);
   } catch (error) {
     console.error('❌ Serverless function error:', error);
+    console.error('Error stack:', error.stack);
+    
     res.status(500).json({
       error: 'Internal Server Error',
       message: 'An unexpected error occurred',
-      details: error.message,
+      details: process.env.NODE_ENV === 'development' ? error.message : 'Server error',
       timestamp: new Date().toISOString(),
     });
   }
